@@ -66,6 +66,7 @@ Para rodar os testes do smart contract:
 📁 Estrutura do Projeto
 -----------------------
 DriveEasy3/
+
 ├── smart-contracts/     # 📜 Contratos Solidity + scripts de deploy  
 ├── vehicle-project/     # 💻 Aplicação React frontend  
 ├── README.txt
