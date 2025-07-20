@@ -73,14 +73,8 @@ DriveEasy3/
 
 ---
 
-🤝 Contribuições
-----------------
-Sinta-se à vontade para abrir **issues**, **pull requests** ou sugerir melhorias!
-
----
-
 👨‍🎓 Autores 
-
+-----------------------
 - Allan José Amaral Ribeiro
 - Marcos Paulo Sales
 
