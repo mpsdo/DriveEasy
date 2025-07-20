@@ -1,5 +1,4 @@
-
-🚗 DriveEasy3 — Plataforma de Aluguel de Veículos com Blockchain
+🚗 DriveEasy — Plataforma de Aluguel de Veículos com Blockchain
 ================================================================
 
 Este projeto é uma plataforma descentralizada para **cadastro e aluguel de veículos** utilizando **smart contracts** em Ethereum e interface em **React**.  
