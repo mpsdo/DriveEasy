@@ -65,7 +65,7 @@ const HistoryVehicle = () => {
                   <tr key={index}>
                     <td style={{ textAlign: "center" }}>{item.model}</td>
                     <td style={{ textAlign: "center" }}>{item.plate}</td>
-                    <td style={{ textAlign: "center" }}>{item.price}</td>
+                    <td style={{ textAlign: "center" }}>{web3.utils.fromWei(item.price.toString(), "ether")}</td>
                     <td style={{ textAlign: "center" }}>{item.duration}</td>
                   </tr>
                 ))
