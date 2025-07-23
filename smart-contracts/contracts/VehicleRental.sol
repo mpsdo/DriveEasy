@@ -24,7 +24,7 @@ contract VehicleRental {
     event CarRented(uint256 indexed carId, address indexed renter, uint256 duration);
     event CarReturned(uint256 indexed carId, address indexed renter);
 
-    // Cadastrar veículo com duração inicial
+    // Cadastrar veículo 
     function addCar(
         string memory _model,
         string memory _licensePlate,
@@ -98,35 +98,38 @@ contract VehicleRental {
         emit CarRented(_id, msg.sender, _duration);
     }
 
-    // Devolver veículo
-    function returnCar(uint256 _id) public {
-        require(_id < cars.length, "ID invalido");
-        Car storage c = cars[_id];
-        require(c.renter == msg.sender, "Voce nao alugou este carro");
-
-        c.duration = 0;
-        c.isAvailable = true;
-        c.renter = address(0);
-
-        emit CarReturned(_id, msg.sender);
-    }
-
-    // Histórico de aluguel
-    function getRentalHistory(address _renter) public view returns (
+   // Historico do veículo alugado por uma conta
+function getRentalHistory(address _renter) 
+    public 
+    view 
+    returns (
         uint256[] memory carIds,
         uint256[] memory durations,
-        uint256[] memory timestamps
-    ) {
-        uint256 count = rentalRecords[_renter].length;
-        carIds = new uint256[](count);
-        durations = new uint256[](count);
-        timestamps = new uint256[](count);
+        string[] memory models,
+        string[] memory plates,
+        uint256[] memory prices
+    ) 
+{
+    uint256 count = rentalRecords[_renter].length;
 
-        for (uint256 i = 0; i < count; i++) {
-            RentalHistory memory r = rentalRecords[_renter][i];
-            carIds[i] = r.carId;
-            durations[i] = r.duration;
-            timestamps[i] = r.timestamp;
-        }
+    carIds = new uint256[](count);
+    durations = new uint256[](count);
+    models = new string[](count);
+    plates = new string[](count);
+    prices = new uint256[](count);
+
+    for (uint256 i = 0; i < count; i++) {
+        RentalHistory memory r = rentalRecords[_renter][i];
+        Car memory c = cars[r.carId]; // agora sim, temos acesso aos dados do carro
+
+        carIds[i] = r.carId;
+        durations[i] = r.duration;
+        models[i] = c.model;
+        plates[i] = c.licensePlate;
+        prices[i] = c.pricePerDay;
     }
+
+    return (carIds, durations, models, plates, prices);
+}
+    
 }

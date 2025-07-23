@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import Dashboard from "../components/Dashboard";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import img8 from "../image/img8.jpg";
 import { useNavigate } from "react-router-dom";
 import { useMetaMask } from "../customhook/useMetaMask";
@@ -10,31 +10,7 @@ const Home = () => {
   const [rentalDays, setRentalDays] = useState({});
   const navigate = useNavigate();
   const { web3, account, contract } = useMetaMask();
-  
-  // Carrega todos os veículos
-  useEffect(() => {
-    async function fetchCars() {
-      if (contract && web3) {
-        try {
-          const result = await contract.methods.getAllCars().call();
-          const carList = result[0].map((id, index) => ({
-            id,
-            model: result[1][index],
-            plate: result[2][index],
-            price: web3.utils.fromWei(result[3][index], 'ether'),
-            duration: result[4][index],
-            available: result[5][index],
-            renter: result[6][index],
-          }));
-          setCars(carList);
-        } catch (error) {
-          console.error("Erro ao buscar carros:", error);
-        }
-      }
-    }
 
-    fetchCars();
-  }, [contract, web3]);
 
   // Alugar veículo com número de dias
   async function handleRent(car) {
@@ -67,10 +43,33 @@ const Home = () => {
   }
 
   // Verifica se há carros
-  function GetProductVehicle() {
-    if (cars.length === 0) {
-      alert("Não há veículos disponíveis no momento!");
+  async function GetProductVehicle() {
+
+    if (contract && web3) {     
+    
+      try {
+        const result = await contract.methods.getAllCars().call();
+        console.log(result[0].length === 0)
+        if (result[0].length === 0) {
+          alert("Nenhum veículo cadastrado para alugar!!!")
+        }
+
+        const carList = result[0].map((id, index) => ({
+          id,
+          model: result[1][index],
+          plate: result[2][index],
+          price: web3.utils.fromWei(result[3][index], 'ether'),
+          duration: result[4][index],
+          available: result[5][index],
+          renter: result[6][index],
+        }));
+        setCars(carList);
+      } catch (error) {
+        console.log("Erro ao buscar carros:", error);
+      }
     }
+
+
   }
 
   // Atualiza dias de aluguel
@@ -89,7 +88,7 @@ const Home = () => {
           cars.map((item, index) => (
             <div key={index} className="card">
               <img src={img8} alt="carro" />
-              <div style={{marginTop:"20px"}}>
+              <div style={{ marginTop: "23px" }}>
                 <h4><span style={{ color: "blue" }}>Veículo:</span> {item.model}</h4>
                 <h4><span style={{ color: "blue" }}>Placa:</span> {item.plate}</h4>
                 <h4><span style={{ color: "blue" }}>Preço:</span> {item.price} ETH/dia</h4>
@@ -100,12 +99,18 @@ const Home = () => {
                       type="number"
                       placeholder="Dias"
                       min="1"
+                      max={item.duration}
                       value={rentalDays[item.id] || ""}
                       onChange={e => updateRentalDays(item.id, e.target.value)}
                       style={{
-                        marginTop: "10px",
+                        marginTop: "1px",
                         padding: "6px",
                         width: "80px",
+                        color: "black",
+                        border: "none",
+                        outline: "none",
+                        borderBottom: "2px solid white",
+                        backgroundColor: "bisque",
                       }}
                     />
                     <button

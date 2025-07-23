@@ -23,7 +23,7 @@ export const useMetaMask = () => {
           if (!accounts || accounts.length === 0) {
             throw new Error('Permissão negada!');
           }
-
+          console.log(accounts)
           setAccount(accounts[0]);
           setWeb3(web3Instance);
 
